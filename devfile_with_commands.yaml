@@ -1,0 +1,32 @@
+
+
+schemaVersion: 2.0.0
+metadata:
+  name: public-repository
+components:
+  - name: test-component
+    container:
+      image: public.ecr.aws/amazonlinux/amazonlinux:2
+      mountSources: true
+      command: ["sleep", "infinity"]
+commands:
+  - id: poststart1
+    exec:
+      component: test-component
+      commandLine: "touch testFile"
+      workingDir: /projects
+  - id: poststart2
+    exec:
+      component: test-component
+      commandLine: "%s"
+      workingDir: /projects
+  - id: poststart3
+    exec:
+      component: test-component
+      commandLine: "touch testFile2"
+      workingDir: /projects
+events:
+  postStart:
+    - poststart1
+    - poststart2
+    - poststart3
